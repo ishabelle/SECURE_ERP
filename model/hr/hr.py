@@ -19,7 +19,7 @@ def create():
     pass
 
 def read():
-    file_content = data_manager.read_table_from_file(DATAFILE)
+    file_content = HEADERS + data_manager.read_table_from_file(DATAFILE)
     return file_content
 
 def update():
