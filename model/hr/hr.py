@@ -22,4 +22,16 @@ def read():
     file_content = HEADERS + data_manager.read_table_from_file(DATAFILE)
     return file_content
 
-def update():
+def update(id, header, value):
+    file_content = read()
+
+    id_index = HEADERS.index("Id")
+    header_index = HEADERS.index(header)
+
+    for element in file_content:
+        if element[id_index] == id:
+            element[header_index] = value
+
+    data_manager.write_table_to_file(DATAFILE, file_content)
+
+def delete():
