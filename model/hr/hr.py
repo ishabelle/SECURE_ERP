@@ -40,5 +40,13 @@ def update(id, header, value):
 
     data_manager.write_table_to_file(DATAFILE, file_content)
 
-def delete():
-    
+def delete(id):
+    table = read()
+    newtable = []
+    id_index = HEADERS.index("Id")
+
+    for element in table:
+        if element[id_index] != id:
+            newtable.append(element)
+
+    data_manager.write_table_to_file(DATAFILE, newtable)
