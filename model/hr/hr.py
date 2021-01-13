@@ -15,19 +15,18 @@ HEADERS = ["Id", "Name", "Date of birth", "Department", "Clearance"]
 
 # CRUD (Create, read, update and delete)
 
+def read(with_headers=False):
+    file_content = data_manager.read_table_from_file(DATAFILE)
+    if with_headers:
+        file_content = HEADERS + file_content
+    return file_content
+
 def create(name, date_of_birth, department, clearance):
     table = read()
     id = util.generate_id()
     data_to_add = [id, name, date_of_birth, department, clearance]
     table.append(data_to_add)
     data_manager.write_table_to_file(DATAFILE, table)
-
-
-def read(with_headers=False):
-    file_content = data_manager.read_table_from_file(DATAFILE)
-    if with_headers:
-        file_content = HEADERS + file_content
-    return file_content
 
 def update(id, header, value):
     file_content = read()
@@ -42,3 +41,4 @@ def update(id, header, value):
     data_manager.write_table_to_file(DATAFILE, file_content)
 
 def delete():
+    
