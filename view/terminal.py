@@ -113,7 +113,7 @@ def get_inputs(labels):
 
     list_with_new_inputs = []
     for i in labels:
-        list_with_new_inputs.append(input(f"{1}: "))
+        list_with_new_inputs.append(input(f"{i}: "))
         print()
     return list_with_new_inputs
 
