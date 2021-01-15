@@ -1,13 +1,16 @@
 from model.crm import crm
 from view import terminal as view
-
+# def list_employees():
+#     employees_table = hr.read()
+#     view.print_table(employees_table
 
 def list_customers():
-    view.print_error_message("Not implemented yet.")
-
+    customers_table = crm.read_file()
+    view.print_table(customers_table, crm.HEADERS)
 
 def add_customer():
-    view.print_error_message("Not implemented yet.")
+       pass
+
 
 
 def update_customer():

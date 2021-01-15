@@ -12,3 +12,15 @@ from model import data_manager, util
 
 DATAFILE = "model/crm/crm.csv"
 HEADERS = ["id", "name", "email", "subscribed"]
+
+
+def read_file():
+    file_content = data_manager.read_table_from_file(DATAFILE)
+    return file_content
+
+ # - Once the CRM module is selected, choosing option 1 will ask the user to type the name, email and subscribed status for a new customer.
+        # After the last field is introduced a new customer is introduced with an random id.
+def add_new_customer(name, email, subscribed_status):
+    table = read_file()
+    user_input_table = [name, email, subscribed_status]
+    
