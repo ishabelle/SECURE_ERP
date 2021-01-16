@@ -5,18 +5,30 @@ from view import terminal as view
 #     view.print_table(employees_table
 
 def list_customers():
+    view.print_message("\nCustomers list:\n")
     customers_table = crm.read_file()
     view.print_table(customers_table, crm.HEADERS)
 
 def add_customer():
-       pass
+    view.print_message("\nAdd new customer:\n")
+    customer_name = view.get_input("What's your email? ")
+    customer_email = view.get_input("What's your email? ")
+    customer_subscribed_status = view.get_input("Are you subscriber? (1: YES | 2: NO) ")
+    crm.create_customer(customer_name, customer_email, customer_subscribed_status)
+    view.print_table(crm.read_file(), crm.HEADERS)
+    
 
 
 
 def update_customer():
-    view.print_error_message("Not implemented yet.")
+    customer_id = view.get_input("What's your Id? ")
+    customer_new_name = view.get_input("What's your name? ")
+    customer_new_email = view.get_input("What's your Id? ")
+    customer_new_subscribe_status = view.get_input("Are you subscriber? (1: YES | 2: NO) ")
 
-
+    crm.update_customer(customer_id, customer_new_name, customer_new_email, customer_new_subscribe_status)
+    
+    
 def delete_customer():
     view.print_error_message("Not implemented yet.")
 
