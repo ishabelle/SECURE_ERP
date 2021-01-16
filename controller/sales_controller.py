@@ -1,5 +1,6 @@
 from model.sales import sales 
 from view import terminal as view
+from model import util
 
 
 INDEX_COL_ID = 0
@@ -27,38 +28,16 @@ def add_transaction(): #DZIAŁA
     view.print_table(sales.read(), sales.HEADERS)
     
     
-# UPDATE  from CRUD
 def update_transaction(): #NIE DZIAŁA
     """ Updating transaction list"""
 
-    view.print_message("\nUPDATING TRANSACTION LIST\n")
-    view.print_table(sales.read(), sales.HEADERS)
-    header = view.get_input("Enter number of transaction to update: ")
-    value = view.get_inputs(sales.HEADERS[2:5])
-    sales.update(id, header, value)
-    view.get_input("Transaction updated. Press enter")
+    view.print_message("\nUPDATING TRANSACTION\n")
+   
+    
+   
     
     
-
     
-    # sales.update(id, header, value)
-    # transactions = data_manager.read_table_from_file(sales.DATAFILE)
-    # user_choice = view.get_input("Please provide the ID's customer, which you want to update: ")
-    # for row in transactions:
-    #     if user_choice == row[0]:
-    #         customer_id = util.generate_id()
-    #         product = view.get_input("Please enter product name: ")
-    #         price = view.get_input("Please enter price of product: ")
-    #         date = view.get_input("Please provide date of transaction (in format 2021-01-11): ")
-    #         row[INDEX_COL_CUSTOMER] = customer_id
-    #         row[INDEX_COL_PRODUCT] = product
-    #         row[INDEX_COL_PRICE] = price
-    #         row[INDEX_COL_DATE] = date
-    #         data_manager.write_table_to_file(sales.DATAFILE, transactions)
-    # view.print_table(transactions, sales.HEADERS)
-
-
-
 def delete_transaction(): #DZIAŁA
     """ Removing transaction from the list of transaction """
 
@@ -66,46 +45,44 @@ def delete_transaction(): #DZIAŁA
     id = view.get_input("Please provide the ID, which you want to update: ")
     sales.delete(id)
     view.print_table(sales.read(), sales.HEADERS)
-  
-            
+              
 
 def get_biggest_revenue_transaction(): #DZIAŁA
     """ Determining which transaction is the largest and makes the biggest revenue """
 
     income = []
-    transactions = sales.read()
-    for row in transactions:
-        income.append(row[INDEX_COL_PRICE])
-    number_of_biggest_income = income.index(max(income))
-    transaction = transactions[number_of_biggest_income]
-    biggest_trans = " ".join(transaction)
-    view.print_message(f"\nTransaction that makes the biggest revenue is: {biggest_trans}\n")
-    return biggest_trans
+    transaction_list = sales.read()
 
+    for element in transaction_list:
+        income.append(float(element[3]))
 
-def get_biggest_revenue_product():
+    max_income_index = income.index(max(income))
+    id_max_income_transaction = transaction_list[max_income_index][INDEX_COL_ID]
+    view.print_message(f"\nTransaction that makes the biggest revenue is: {id_max_income_transaction}\n")
+        
+
+def get_biggest_revenue_product(): #DZIAŁA
     """ Determining which product makes the biggest revenue """
 
-    # biggest_trans = get_biggest_revenue_transaction()
     income = []
-    transactions = sales.read()
-    for row in transactions:
-        income.append(row[INDEX_COL_PRICE])
-    number_of_biggest_income = income.index(max(income))
-    transaction = transactions[number_of_biggest_income]
-    biggest_trans = " ".join(transaction)
-    product = biggest_trans[INDEX_COL_PRODUCT]
-    view.print_message(f"\nThe product that makes the biggest revenue is: {product}\n")
-    return product
+    transaction_list = sales.read()
 
+    for element in transaction_list:
+        income.append(float(element[3]))
+
+    max_income_index = income.index(max(income))
+    id_max_income_transaction = transaction_list[max_income_index][INDEX_COL_PRODUCT]
+    view.print_message(f"\nThe product that makes the biggest revenue is: {id_max_income_transaction}\n")
+    
 
 def count_transactions_between(): #DZIAŁA
     """ Counting number of transactions between two given dates """
     
     dates = []
-    first_date = view.get_input("Please provide first date (in format 2021-01-11): ")
-    second_date = view.get_input("Please provide second date (in format 2021-01-11): ")
+    first_date = view.get_input("\nPlease provide first date (in format 2021-01-11): ")
+    second_date = view.get_input("\nPlease provide second date (in format 2021-01-11): ")
     transactions = sales.read()
+    
     for row in transactions:
         dates.append(row[-1])
     count = 0
@@ -115,27 +92,29 @@ def count_transactions_between(): #DZIAŁA
     view.print_message(f"\nThe number of transaction beetween {first_date} and {second_date} is {count}.\n")
 
 
-def sum_transactions_between():
+def sum_transactions_between(): #DZIAŁA
     """ Summing the price of transactions between two given dates """
 
     dates = []
-    trans_price = []
-    trans_sum = []
+    transaction_price = []
+    transactions_sum = []
     indexes = []
     transactions = sales.read()
-    first_date = view.get_input("Please provide first date (in format 2021-01-11): ")
-    second_date = view.get_input("Please provide second date (in format 2021-01-11): ")
+    first_date = view.get_input("\nPlease provide first date (in format 2021-01-11): ")
+    second_date = view.get_input("\nPlease provide second date (in format 2021-01-11): ")
+
     for row in transactions:
         dates.append(row[-1])
-        trans_price.append(row[-2])
+        transaction_price.append(row[-2])
     for date in dates:
         if date > first_date and date < second_date:
             indexes.append(dates.index(date))
     for index in indexes:
-        trans_sum.append(trans_price[index])
-    trans_sum = [float(trans) for trans in trans_sum]
-    result = sum(trans_sum)
-    view.print_message(f"The sum beetween {first_date} and {second_date} is {result}.")
+        transactions_sum.append(transaction_price[index])
+    
+    transactions_sum = [float(trans) for trans in transactions_sum]
+    result = sum(transactions_sum)
+    view.print_message(f"\nThe sum beetween {first_date} and {second_date} is {result}.\n")
 
 
 def run_operation(option):
