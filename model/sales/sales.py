@@ -13,8 +13,6 @@ from model import data_manager, util
 DATAFILE = "model/sales/sales.csv"
 HEADERS = ["Id", "Customer", "Product", "Price", "Date"]
 
-# Create Read Update Delete
-
 def create(product, price, date):
     table = read()
     id = util.generate_id()
