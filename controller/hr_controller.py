@@ -4,11 +4,17 @@ from view import terminal as view
 
 def list_employees():
     employees_table = hr.read()
-    view.print_table(employees_table)
+    view.print_table(employees_table, hr.HEADERS)
 
 
 def add_employee():
-    view.print_error_message("Not implemented yet.")
+    view.print_message("You are adding a new employee. Please provide necessary information:")
+    employee_headers = hr.HEADERS[1:]
+    data = dict()
+    for header in employee_headers:
+        data[header] = view.get_input(f'{header}: ')
+    hr.create(data)
+    view.print_message("Employee added.")
 
 
 def update_employee():
