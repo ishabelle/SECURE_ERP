@@ -5,29 +5,28 @@ from view import terminal as view
 #     view.print_table(employees_table
 
 def list_customers():
-    view.print_message("\nCustomers list:\n")
-    customers_table = crm.read_file()
-    view.print_table(customers_table, crm.HEADERS)
+    view.print_message("\n List of Customers:\n")
+    customers_list = crm.read()
+    view.print_table(customers_list, crm.HEADERS)
 
 def add_customer():
-    view.print_message("\nAdd new customer:\n")
-    customer_name = view.get_input("What's your email? ")
-    customer_email = view.get_input("What's your email? ")
-    customer_subscribed_status = view.get_input("Are you subscriber? (1: YES | 2: NO) ")
-    crm.create_customer(customer_name, customer_email, customer_subscribed_status)
-    view.print_table(crm.read_file(), crm.HEADERS)
+    view.print_message("\n Add customer:\n")
+    user_name = view.get_input("What's your name? ")
+    user_email = view.get_input("What's your email? ")
+    user_subscribe_status = view.get_input("Are your subscriber? 1: YES, 2: NO")
+    crm.create_customer(user_name, user_email, user_subscribe_status)
     
-
+    view.print_table(crm.read(), crm.HEADERS)
 
 
 def update_customer():
-    customer_id = view.get_input("What's your Id? ")
-    customer_new_name = view.get_input("What's your name? ")
-    customer_new_email = view.get_input("What's your Id? ")
-    customer_new_subscribe_status = view.get_input("Are you subscriber? (1: YES | 2: NO) ")
-
-    crm.update_customer(customer_id, customer_new_name, customer_new_email, customer_new_subscribe_status)
+    user_id = view.get_input("What's your ID? ")
+    updated_name = view.get_input("What's your name? ")
+    updated_email = view.get_input("What's your email? ")
+    updated_subscribe_status = view.get_input("Are your subscriber? 1: YES, 2: NO")
     
+    crm.update(user_id, updated_name, updated_email, updated_subscribe_status)
+    view.print_table(crm.read(), crm.HEADERS)
     
 def delete_customer():
     view.print_error_message("Not implemented yet.")

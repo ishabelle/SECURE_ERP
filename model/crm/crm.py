@@ -14,28 +14,26 @@ DATAFILE = "model/crm/crm.csv"
 HEADERS = ["id", "name", "email", "subscribed"]
 
 
-def read_file():
+def read():
     file_content = data_manager.read_table_from_file(DATAFILE)
     return file_content
 
-
-def create_customer(name, email, subscribed_status):
-    table = read_file()
+def create_customer(name, email, subscribe_status):
+    file_content = read()
     user_id = util.generate_id()
-    user_input_table = [name, email, subscribed_status]
-    table.append(user_input_table)
-    user_input_table.insert(0, user_id)
+    user_inputs_table = [name, email, subscribe_status]
+    user_inputs_table.insert(user_id)
+    file_content.append(user_inputs_table)
+    data_manager.write_table_to_file(file_content)
+
+def update(id, updated_name, updated_email, updated_subscribe_status):
+    customer_table = read()
     
-    data_manager.write_table_to_file(DATAFILE, user_input_table)
-        
-def update_customer(customer_id, name, email, subscribe_status):
-    ''' - Once the CRM module is selected, choosing option 3 will ask the user for the id  of a customer.
-    If the id belongs to an existent customer then the user will enter new values for the name, email and 
-    subscribe status. Once the last field is entered,  the customer fields are updated with the given values.
-    '''
-    table = read_file()
-    
-    
-    
-    
+    for i in customer_table:
+        if id in i[0]:
+            i[0] = id 
+            i[1] = updated_name
+            i[2] = updated_email
+            i[3] = updated_subscribe_status
+    data_manager.write_table_to_file(DATAFILE, customer_table)
     
