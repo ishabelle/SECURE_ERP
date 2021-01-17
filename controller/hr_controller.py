@@ -1,7 +1,9 @@
 from model.hr import hr
 from view import terminal as view
 
-
+# def list_employees():
+#     employees_table = hr.read()
+#     view.print_table(employees_table)
 def list_employees():
     employees_table = hr.read()
     view.print_table(employees_table, hr.HEADERS)
