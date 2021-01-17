@@ -30,9 +30,13 @@ def update_employee():
     view.print_message("What would you like to update?")
     employee = employees_table[emp_number]
     for count, label in enumerate(employee):
-        view.print_general_results(label, hr.HEADERS[count])
-
-
+        view.print_general_results([hr.HEADERS[count], label], count)
+    record = int(view.get_input("Please type a number: "))
+    current_label = employee[hr.HEADERS.index("Name")]
+    view.print_message(f"You're updating {current_label}'s {hr.HEADERS[record]}")
+    new_value = view.get_input("Please provide new value: ")
+    hr.update(employee[hr.HEADERS.index("Id")], hr.HEADERS[record], new_value)
+    view.print_message("Record updated.")
 
 
 def delete_employee():
