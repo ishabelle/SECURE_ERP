@@ -18,7 +18,19 @@ def add_employee():
 
 
 def update_employee():
-    view.print_error_message("Not implemented yet.")
+    employees_table = hr.read()
+    
+    view.print_message("Which employee's info you'd like to update?")
+    for count, employee in enumerate(employees_table):
+        view.print_general_results(employee, count)
+    emp_number = int(view.get_input("Please provide employee number:"))
+    
+    view.print_message("What would you like to update?")
+    employee = employees_table[emp_number]
+    for count, label in enumerate(employee):
+        view.print_general_results(label, hr.HEADERS[count])
+
+
 
 
 def delete_employee():
@@ -89,7 +101,7 @@ def menu():
     while operation != '0':
         display_menu()
         try:
-            operation = view.get_input("Select an operation")
+            operation = view.get_input("Select an operation: ")
             run_operation(int(operation))
         except KeyError as err:
             view.print_error_message(err)
