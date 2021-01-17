@@ -158,7 +158,7 @@ def menu():
     while operation != '0':
         display_menu()
         try:
-            operation = view.get_input("Select an operation")
+            operation = view.get_input("Select an operation: ")
             run_operation(int(operation))
         except KeyError as err:
             view.print_error_message(err)
