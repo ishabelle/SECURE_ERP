@@ -8,6 +8,8 @@ def list_customers():
     customers_list = crm.read()
     view.print_table(customers_list, crm.HEADERS)
 
+
+
 def add_customer():
     '''By using this function, we can add customer to chosen file'''
     view.print_message("\n Add customer:\n")
@@ -19,16 +21,20 @@ def add_customer():
     view.print_table(crm.read(), crm.HEADERS)
 
 
+
 def update_customer():
     '''By using this function, we can update customer'''
     view.print_message("\n Update customer:\n")
     user_id = view.get_input("Type customer id ")
-    updated_name = view.get_input("Type name for update ")
-    updated_email = view.get_input("Type email for update ")
-    updated_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO ")
+    crm.check_id(user_id)
+    updated_name = view.get_input("Type name for update or press enter to skip this field ")
+    updated_email = view.get_input("Type email for update or press enter to skip this field  ")
+    updated_subscribe_status = view.get_input("Type user subscribe status or press enter to skip this field (1: Is a subsriber, 2: is't a subscriber) ")
     
     crm.update(user_id, updated_name, updated_email, updated_subscribe_status)
     view.print_table(crm.read(), crm.HEADERS)
+    
+    
     
 def delete_customer():
     '''By using this function, we can delete customer'''
@@ -37,11 +43,15 @@ def delete_customer():
     crm.delete(user_id)
     view.print_table(crm.read(), crm.HEADERS)
 
+
+
 def get_subscribed_emails():
     '''By using this function, we can check all subscribers'''
     view.print_message("\n List of subscribers emails:\n")
     subscribers_email_list = crm.check_subscribers()
     view.print_message((''.join(subscribers_email_list)))
+    
+    
     
 def run_operation(option):
     if option == 1:
@@ -60,6 +70,7 @@ def run_operation(option):
         raise KeyError("There is no such option.")
 
 
+
 def display_menu():
     options = ["Back to main menu",
                "List customers",
@@ -68,6 +79,7 @@ def display_menu():
                "Remove customer",
                "Subscribed customer emails"]
     view.print_menu("Customer Relationship Management", options)
+
 
 
 def menu():
