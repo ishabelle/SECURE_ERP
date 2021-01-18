@@ -1,8 +1,6 @@
 from model.crm import crm
 from view import terminal as view
-# def list_employees():
-#     employees_table = hr.read()
-#     view.print_table(employees_table
+
 
 def list_customers():
     view.print_message("\n List of Customers:\n")
@@ -11,26 +9,29 @@ def list_customers():
 
 def add_customer():
     view.print_message("\n Add customer:\n")
-    user_name = view.get_input("What's your name? ")
-    user_email = view.get_input("What's your email? ")
-    user_subscribe_status = view.get_input("Are your subscriber? 1: YES, 2: NO")
+    user_name = view.get_input("Type name: ")
+    user_email = view.get_input("Type email ")
+    user_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO")
     crm.create_customer(user_name, user_email, user_subscribe_status)
     
     view.print_table(crm.read(), crm.HEADERS)
 
 
 def update_customer():
-    user_id = view.get_input("What's your ID? ")
-    updated_name = view.get_input("What's your name? ")
-    updated_email = view.get_input("What's your email? ")
-    updated_subscribe_status = view.get_input("Are your subscriber? 1: YES, 2: NO")
+    view.print_message("\n Update customer:\n")
+    user_id = view.get_input("Type customer id ")
+    updated_name = view.get_input("Type name for update ")
+    updated_email = view.get_input("Type email for update ")
+    updated_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO")
     
     crm.update(user_id, updated_name, updated_email, updated_subscribe_status)
     view.print_table(crm.read(), crm.HEADERS)
     
 def delete_customer():
-    view.print_error_message("Not implemented yet.")
-
+    view.print_message("\n delete_customer:\n")
+    user_id = view.get_input("User id: ")
+    crm.delete(user_id)
+    view.print_table(crm.read(), crm.HEADERS)
 
 def get_subscribed_emails():
     view.print_error_message("Not implemented yet.")

@@ -37,3 +37,15 @@ def update(id, updated_name, updated_email, updated_subscribe_status):
             i[3] = updated_subscribe_status
     data_manager.write_table_to_file(DATAFILE, customer_table)
     
+#  - Once the CRM module is selected, choosing option 4 will ask the user for the id  of a customer.
+#  If the id belongs to an existent customer then that it will be deleted from the database.
+def delete(id):
+    customer_table = read()
+    
+    for line in customer_table:
+        if id in line[0]:
+            line.clear()
+            filtered_list = [x for x in customer_table if x != []]
+            
+    data_manager.write_table_to_file(DATAFILE, filtered_list)
+    
