@@ -22,9 +22,9 @@ def create_customer(name, email, subscribe_status):
     file_content = read()
     user_id = util.generate_id()
     user_inputs_table = [name, email, subscribe_status]
-    user_inputs_table.insert(user_id)
+    user_inputs_table.insert(0, user_id)
     file_content.append(user_inputs_table)
-    data_manager.write_table_to_file(file_content)
+    data_manager.write_table_to_file(DATAFILE ,file_content)
 
 def update(id, updated_name, updated_email, updated_subscribe_status):
     customer_table = read()
@@ -37,8 +37,7 @@ def update(id, updated_name, updated_email, updated_subscribe_status):
             i[3] = updated_subscribe_status
     data_manager.write_table_to_file(DATAFILE, customer_table)
     
-#  - Once the CRM module is selected, choosing option 4 will ask the user for the id  of a customer.
-#  If the id belongs to an existent customer then that it will be deleted from the database.
+
 def delete(id):
     customer_table = read()
     
@@ -48,4 +47,14 @@ def delete(id):
             filtered_list = [x for x in customer_table if x != []]
             
     data_manager.write_table_to_file(DATAFILE, filtered_list)
-    
+
+# Get the emails of subscribed customers.
+def check_subscribers():
+    customer_table = read()
+    subscribers_list = []
+    count = 0
+    for i in customer_table:
+        if i[3] == "1":
+            count += 1
+            subscribers_list.append(f"{count}. {i[2]}\n")
+    return subscribers_list

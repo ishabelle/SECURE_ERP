@@ -11,7 +11,7 @@ def add_customer():
     view.print_message("\n Add customer:\n")
     user_name = view.get_input("Type name: ")
     user_email = view.get_input("Type email ")
-    user_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO")
+    user_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO ")
     crm.create_customer(user_name, user_email, user_subscribe_status)
     
     view.print_table(crm.read(), crm.HEADERS)
@@ -22,7 +22,7 @@ def update_customer():
     user_id = view.get_input("Type customer id ")
     updated_name = view.get_input("Type name for update ")
     updated_email = view.get_input("Type email for update ")
-    updated_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO")
+    updated_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO ")
     
     crm.update(user_id, updated_name, updated_email, updated_subscribe_status)
     view.print_table(crm.read(), crm.HEADERS)
@@ -34,9 +34,10 @@ def delete_customer():
     view.print_table(crm.read(), crm.HEADERS)
 
 def get_subscribed_emails():
-    view.print_error_message("Not implemented yet.")
-
-
+    view.print_message("\n List of subscribers emails:\n")
+    subscribers_email_list = crm.check_subscribers()
+    view.print_message((''.join(subscribers_email_list)))
+    
 def run_operation(option):
     if option == 1:
         list_customers()
