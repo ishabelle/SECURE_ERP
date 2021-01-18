@@ -1,42 +1,48 @@
 from model.crm import crm
 from view import terminal as view
-# def list_employees():
-#     employees_table = hr.read()
-#     view.print_table(employees_table
+
 
 def list_customers():
-    view.print_message("\nCustomers list:\n")
-    customers_table = crm.read_file()
-    view.print_table(customers_table, crm.HEADERS)
+    '''By using this function, we can print list of customers in table, from loaded file in table'''
+    view.print_message("\n List of Customers:\n")
+    customers_list = crm.read()
+    view.print_table(customers_list, crm.HEADERS)
 
 def add_customer():
-    view.print_message("\nAdd new customer:\n")
-    customer_name = view.get_input("What's your email? ")
-    customer_email = view.get_input("What's your email? ")
-    customer_subscribed_status = view.get_input("Are you subscriber? (1: YES | 2: NO) ")
-    crm.create_customer(customer_name, customer_email, customer_subscribed_status)
-    view.print_table(crm.read_file(), crm.HEADERS)
+    '''By using this function, we can add customer to chosen file'''
+    view.print_message("\n Add customer:\n")
+    user_name = view.get_input("Type name: ")
+    user_email = view.get_input("Type email ")
+    user_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO ")
+    crm.create_customer(user_name, user_email, user_subscribe_status)
     
-
+    view.print_table(crm.read(), crm.HEADERS)
 
 
 def update_customer():
-    customer_id = view.get_input("What's your Id? ")
-    customer_new_name = view.get_input("What's your name? ")
-    customer_new_email = view.get_input("What's your Id? ")
-    customer_new_subscribe_status = view.get_input("Are you subscriber? (1: YES | 2: NO) ")
-
-    crm.update_customer(customer_id, customer_new_name, customer_new_email, customer_new_subscribe_status)
+    '''By using this function, we can update customer'''
+    view.print_message("\n Update customer:\n")
+    user_id = view.get_input("Type customer id ")
+    updated_name = view.get_input("Type name for update ")
+    updated_email = view.get_input("Type email for update ")
+    updated_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO ")
     
+    crm.update(user_id, updated_name, updated_email, updated_subscribe_status)
+    view.print_table(crm.read(), crm.HEADERS)
     
 def delete_customer():
-    view.print_error_message("Not implemented yet.")
-
+    '''By using this function, we can delete customer'''
+    view.print_message("\n delete_customer:\n")
+    user_id = view.get_input("User id: ")
+    crm.delete(user_id)
+    view.print_table(crm.read(), crm.HEADERS)
 
 def get_subscribed_emails():
-    view.print_error_message("Not implemented yet.")
-
-
+    '''By using this function, we can check all subscribers'''
+    view.print_message("\n List of subscribers emails:\n")
+    subscribers_email_list = crm.check_subscribers()
+    view.print_message((''.join(subscribers_email_list)))
+    
 def run_operation(option):
     if option == 1:
         list_customers()
