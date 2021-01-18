@@ -20,6 +20,8 @@ INDEX_COL_PRICE = 3
 INDEX_COL_DATE = 4
 
 def create(product, price, date):
+    """ Developing new data's """
+
     table = read()
     id = util.generate_id()
     customer = util.generate_id()
@@ -29,14 +31,17 @@ def create(product, price, date):
 
 
 def read(with_headers = False):
+    """ Opening file with data's """
+
     file_content = data_manager.read_table_from_file(DATAFILE)
     if with_headers:
         file_content = HEADERS + file_content
     return file_content
 
 
-
 def update(id, product, price, date): 
+    """ Changing existing data's """
+
     transactions = read()
 
     for transaction in transactions:
@@ -54,6 +59,8 @@ def update(id, product, price, date):
 
     
 def delete(id):
+    """ Removing existing data's """
+    
     table = read()
     new_table = []
     id_index = HEADERS.index("Id")
