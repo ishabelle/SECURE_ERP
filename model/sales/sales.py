@@ -13,6 +13,12 @@ from model import data_manager, util
 DATAFILE = "model/sales/sales.csv"
 HEADERS = ["Id", "Customer", "Product", "Price", "Date"]
 
+INDEX_COL_ID = 0
+INDEX_COL_CUSTOMER = 1
+INDEX_COL_PRODUCT = 2 
+INDEX_COL_PRICE = 3
+INDEX_COL_DATE = 4
+
 def create(product, price, date):
     table = read()
     id = util.generate_id()
@@ -29,19 +35,24 @@ def read(with_headers = False):
     return file_content
 
 
-def update(id, header, value):
-    file_content = read()
 
-    id_index = HEADERS.index("Id")
-    header_index = HEADERS.index(header)
+def update(id, product, price, date): 
+    transactions = read()
 
-    for element in file_content:
-        if element[id_index] == id:
-            element[header_index] = value
+    for transaction in transactions:
+        if id == transaction[INDEX_COL_ID]:
+            trans_to_update = transaction
 
-    data_manager.write_table_to_file(DATAFILE, file_content)
+    if product:
+        trans_to_update[INDEX_COL_PRODUCT] = product
+    if price:
+        trans_to_update[INDEX_COL_PRICE] = price
+    if date:
+        trans_to_update[INDEX_COL_DATE] = date
 
+    data_manager.write_table_to_file(DATAFILE, transactions)
 
+    
 def delete(id):
     table = read()
     new_table = []
