@@ -3,11 +3,13 @@ from view import terminal as view
 
 
 def list_customers():
+    '''By using this function, we can print list of customers in table, from loaded file in table'''
     view.print_message("\n List of Customers:\n")
     customers_list = crm.read()
     view.print_table(customers_list, crm.HEADERS)
 
 def add_customer():
+    '''By using this function, we can add customer to chosen file'''
     view.print_message("\n Add customer:\n")
     user_name = view.get_input("Type name: ")
     user_email = view.get_input("Type email ")
@@ -18,6 +20,7 @@ def add_customer():
 
 
 def update_customer():
+    '''By using this function, we can update customer'''
     view.print_message("\n Update customer:\n")
     user_id = view.get_input("Type customer id ")
     updated_name = view.get_input("Type name for update ")
@@ -28,12 +31,14 @@ def update_customer():
     view.print_table(crm.read(), crm.HEADERS)
     
 def delete_customer():
+    '''By using this function, we can delete customer'''
     view.print_message("\n delete_customer:\n")
     user_id = view.get_input("User id: ")
     crm.delete(user_id)
     view.print_table(crm.read(), crm.HEADERS)
 
 def get_subscribed_emails():
+    '''By using this function, we can check all subscribers'''
     view.print_message("\n List of subscribers emails:\n")
     subscribers_email_list = crm.check_subscribers()
     view.print_message((''.join(subscribers_email_list)))
