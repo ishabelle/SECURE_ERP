@@ -9,7 +9,8 @@ INDEX_COL_PRODUCT = 2
 INDEX_COL_PRICE = 3
 INDEX_COL_DATE = 4
 
-def list_transactions(): #DZIAŁA
+
+def list_transactions():
     """ Opening transactions list """
 
     view.print_message("\nLIST TRANSACTION\n")
@@ -17,7 +18,7 @@ def list_transactions(): #DZIAŁA
     view.print_table(transactions_list, sales.HEADERS)
     
 
-def add_transaction(): #DZIAŁA
+def add_transaction():
     """ Adding new element to list transactions """
 
     view.print_message("\nADDING NEW TRANSACTIONS\n")
@@ -28,17 +29,17 @@ def add_transaction(): #DZIAŁA
     view.print_table(sales.read(), sales.HEADERS)
     
     
-def update_transaction(): #NIE DZIAŁA
+def update_transaction(): 
     """ Updating transaction list"""
-
-    view.print_message("\nUPDATING TRANSACTION\n")
+    
+    transactions = sales.read()
+    id = view.get_input("Please provide and ID of transaction you wish to update: ")
+    product, price, date = view.get_inputs(["Update product name: ", "Update product price: ", "Update date in format (YYYY-MM-DD): "])
+    sales.update(id, product, price, date)
+    view.print_table(sales.read(), sales.HEADERS)
    
     
-   
-    
-    
-    
-def delete_transaction(): #DZIAŁA
+def delete_transaction(): 
     """ Removing transaction from the list of transaction """
 
     view.print_message("\nREMOVING TRANSACTION\n")
@@ -47,7 +48,7 @@ def delete_transaction(): #DZIAŁA
     view.print_table(sales.read(), sales.HEADERS)
               
 
-def get_biggest_revenue_transaction(): #DZIAŁA
+def get_biggest_revenue_transaction():
     """ Determining which transaction is the largest and makes the biggest revenue """
 
     income = []
@@ -61,7 +62,7 @@ def get_biggest_revenue_transaction(): #DZIAŁA
     view.print_message(f"\nTransaction that makes the biggest revenue is: {id_max_income_transaction}\n")
         
 
-def get_biggest_revenue_product(): #DZIAŁA
+def get_biggest_revenue_product(): 
     """ Determining which product makes the biggest revenue """
 
     income = []
@@ -75,7 +76,7 @@ def get_biggest_revenue_product(): #DZIAŁA
     view.print_message(f"\nThe product that makes the biggest revenue is: {id_max_income_transaction}\n")
     
 
-def count_transactions_between(): #DZIAŁA
+def count_transactions_between(): 
     """ Counting number of transactions between two given dates """
     
     dates = []
@@ -92,7 +93,7 @@ def count_transactions_between(): #DZIAŁA
     view.print_message(f"\nThe number of transaction beetween {first_date} and {second_date} is {count}.\n")
 
 
-def sum_transactions_between(): #DZIAŁA
+def sum_transactions_between(): 
     """ Summing the price of transactions between two given dates """
 
     dates = []
