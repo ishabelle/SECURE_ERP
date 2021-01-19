@@ -23,8 +23,14 @@ def update_employee():
     employees_table = hr.read()
     
     view.print_message("Which employee's info you'd like to update?")
+
     for count, employee in enumerate(employees_table):
-        view.print_general_results(employee[hr.HEADERS.index("Name")], count)
+        employee_data = {}
+        for value in range(len(employee)):
+            employee_data.update({hr.HEADERS[value]: employee[value]})
+
+        view.print_general_results(employee_data, count)
+
     emp_number = int(view.get_input("Please provide employee number:"))
     
     view.print_message("What would you like to update?")
@@ -42,7 +48,22 @@ def update_employee():
 
 
 def delete_employee():
-    view.print_error_message("Not implemented yet.")
+    employees_table = hr.read()
+    
+    view.print_message("Which employee you'd like to delete?")
+
+    for count, employee in enumerate(employees_table):
+        employee_data = {}
+        for value in range(len(employee)):
+            employee_data.update({hr.HEADERS[value]: employee[value]})
+
+        view.print_general_results(employee_data, count)
+
+    emp_number = int(view.get_input("Please provide employee number:"))
+
+    chosen_emp_id = employees_table[emp_number][hr.HEADERS.index("Id")]
+
+    hr.delete(chosen_emp_id)
 
 
 def get_oldest_and_youngest():
