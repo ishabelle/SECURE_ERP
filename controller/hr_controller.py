@@ -67,7 +67,23 @@ def delete_employee():
 
 
 def get_oldest_and_youngest():
-    view.print_error_message("Not implemented yet.")
+    employees_table = hr.read()
+
+    DoB_position = hr.HEADERS.index("Date of birth")
+    Name_position = hr.HEADERS.index("Name")
+
+    youngest_date = "-5000-01-01"
+    oldest_date = "5000-01-01"
+
+    for employee in employees_table:
+        if employee[DoB_position] >= youngest_date:
+            youngest_date = employee[Name_position]
+
+    for employee in employees_table:
+        if employee[DoB_position] <= oldest_date:
+            oldest_date = employee[Name_position]
+
+    view.print_general_results((youngest_date, oldest_date), "The youngest and oldest employees are")
 
 
 def get_average_age():
