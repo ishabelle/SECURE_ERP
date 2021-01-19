@@ -87,7 +87,24 @@ def get_oldest_and_youngest():
 
 
 def get_average_age():
-    view.print_error_message("Not implemented yet.")
+
+    employees_table = hr.read()
+
+    DoB_position = hr.HEADERS.index("Date of birth")
+
+    currentdate = view.get_input("Please enter current date in yyyy-mm-dd format: ")
+
+    current_year = currentdate[:4]
+
+    bth_years = []
+
+    for employee in employees_table:
+        emp_age  = int(current_year) - int(employee[DoB_position][:4])
+        bth_years.append(emp_age)
+
+    avg_age = sum(bth_years) / len(bth_years)
+
+    view.print_general_results({"The average age of employees is": avg_age}, "")
 
 
 def next_birthdays():
