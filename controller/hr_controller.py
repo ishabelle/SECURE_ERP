@@ -1,9 +1,7 @@
 from model.hr import hr
 from view import terminal as view
 
-# def list_employees():
-#     employees_table = hr.read()
-#     view.print_table(employees_table)
+
 def list_employees():
     employees_table = hr.read()
     view.print_table(employees_table, hr.HEADERS)
@@ -24,6 +22,8 @@ def update_employee():
     
     view.print_message("Which employee's info you'd like to update?")
 
+# REFACTORING BLOCK
+
     for count, employee in enumerate(employees_table):
         employee_data = {}
         for value in range(len(employee)):
@@ -31,13 +31,20 @@ def update_employee():
 
         view.print_general_results(employee_data, count)
 
-    emp_number = int(view.get_input("Please provide employee number:"))
+    emp_number = int(view.get_input("Please provide employee number:")) #validate input or TRY EXCEPT
     
+# /REFACTORING BLOCK
+
     view.print_message("What would you like to update?")
     employee = employees_table[emp_number]
+
     for count, label in enumerate(employee):
         view.print_general_results({hr.HEADERS[count]: label}, count)
+
     record = int(view.get_input("Please type a number: "))
+
+
+
     current_label = employee[hr.HEADERS.index("Name")]
     view.print_message(f"You're updating {current_label}'s {hr.HEADERS[record]}")
     new_value = view.get_input("Please provide new value: ")
@@ -52,6 +59,8 @@ def delete_employee():
     
     view.print_message("Which employee you'd like to delete?")
 
+# REFACTORING BLOCK
+
     for count, employee in enumerate(employees_table):
         employee_data = {}
         for value in range(len(employee)):
@@ -60,6 +69,8 @@ def delete_employee():
         view.print_general_results(employee_data, count)
 
     emp_number = int(view.get_input("Please provide employee number:"))
+
+# /REFACTORING BLOCK
 
     chosen_emp_id = employees_table[emp_number][hr.HEADERS.index("Id")]
 
@@ -102,7 +113,7 @@ def get_average_age():
         emp_age  = int(current_year) - int(employee[DoB_position][:4])
         bth_years.append(emp_age)
 
-    avg_age = sum(bth_years) / len(bth_years)
+    avg_age = sum(bth_years) / len(bth_years) #should count months (at least)
 
     view.print_general_results({"The average age of employees is": avg_age}, "")
 

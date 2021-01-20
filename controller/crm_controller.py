@@ -48,7 +48,10 @@ def delete_customer():
 def get_subscribed_emails():
     '''By using this function, we can check all subscribers'''
     view.print_message("\n List of subscribers emails:\n")
-    subscribers_email_list = crm.check_subscribers()
+    
+    #we changed get_subscribers. manage new output
+    
+    subscribers_email_list = crm.get_subscribers()
     view.print_message((''.join(subscribers_email_list)))
     
     
@@ -59,7 +62,10 @@ def run_operation(option):
     elif option == 2:
         add_customer()
     elif option == 3:
-        update_customer()
+        try:
+            update_customer()
+        except ValueError as e:
+            view.print_error_message(e)
     elif option == 4:
         delete_customer()
     elif option == 5:

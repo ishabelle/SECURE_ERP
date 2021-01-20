@@ -19,6 +19,15 @@ INDEX_COL_PRODUCT = 2
 INDEX_COL_PRICE = 3
 INDEX_COL_DATE = 4
 
+
+def read(with_headers = False):
+    """ Opening file with data's """
+
+    file_content = data_manager.read_table_from_file(DATAFILE)
+    if with_headers:
+        file_content = HEADERS + file_content
+    return file_content
+
 def create(product, price, date):
     """ Developing new data's """
 
@@ -28,15 +37,6 @@ def create(product, price, date):
     data_to_add = [id, customer, product, price, date]
     table.append(data_to_add)
     data_manager.write_table_to_file(DATAFILE, table)
-
-
-def read(with_headers = False):
-    """ Opening file with data's """
-
-    file_content = data_manager.read_table_from_file(DATAFILE)
-    if with_headers:
-        file_content = HEADERS + file_content
-    return file_content
 
 
 def update(id, product, price, date): 
