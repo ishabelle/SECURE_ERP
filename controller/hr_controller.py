@@ -3,17 +3,21 @@ from view import terminal as view
 
 
 def list_employees():
+    
     employees_table = hr.read()
     view.print_table(employees_table, hr.HEADERS)
 
 
 def add_employee():
+
     view.print_message("You are adding a new employee. Please provide necessary information:")
     employee_headers = hr.HEADERS[1:]
     data = dict()
+
     for header in employee_headers:
         data[header] = view.get_input(f'{header}: ')
     hr.create(data)
+
     view.print_message("Employee added.")
 
 def employee_pointer(employees_table):
@@ -90,11 +94,11 @@ def get_oldest_and_youngest():
 def is_leap_year(year):
     return (year %4 == 0 and not year %100 == 0) or year %400 == 0
 
-#Calculate the Days between Two Date
-
-days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 def day_counter(year1, month1, day1):
+
+    days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
     if month1 == 2:
         if is_leap_year(year1):
             if day1 < days_in_month[month1-1] + 1:
@@ -111,19 +115,19 @@ def day_counter(year1, month1, day1):
             if day1 < days_in_month[month1-1]:
                 return year1, month1, day1 + 1
             else:
-                if month1 ==12:
+                if month1 == 12:
                     return year1 + 1, 1, 1
                 else:
                     return year1, month1 + 1, 1
     else:
         if day1 < days_in_month[month1-1]:
-             return year1, month1, day1+1
+             return year1, month1, day1 + 1
         else:
             if month1 == 12:
                 year1 += 1
                 return year1,1,1
             else:
-                    return year1, month1 +1 , 1
+                    return year1, month1 + 1 , 1
 
 
 def days_between_dates(year1, month1, day1, year2, month2, day2, count_end_day):
@@ -134,14 +138,14 @@ def days_between_dates(year1, month1, day1, year2, month2, day2, count_end_day):
         year1, year2 = year2, year1
         day1, day2 = day2, day1
 
-
     days = 0
 
     while(not(month1==month2 and year1==year2 and day1==day2)):
         year1, month1, day1 = day_counter(year1,month1,day1)
-        days+=1
+        days += 1
     if count_end_day:
-        days+=1
+        days += 1
+
     return days
 
 
