@@ -16,13 +16,7 @@ def add_employee():
     hr.create(data)
     view.print_message("Employee added.")
 
-
-def update_employee():
-    employees_table = hr.read()
-    
-    view.print_message("Which employee's info you'd like to update?")
-
-# REFACTORING BLOCK
+def employee_pointer(employees_table):
 
     for count, employee in enumerate(employees_table):
         employee_data = {}
@@ -33,7 +27,15 @@ def update_employee():
 
     emp_number = int(view.get_input("Please provide employee number:")) #validate input or TRY EXCEPT
     
-# /REFACTORING BLOCK
+    return emp_number
+
+
+def update_employee():
+    employees_table = hr.read()
+    
+    view.print_message("Which employee's info you'd like to update?")
+
+    emp_number = employee_pointer(employees_table)
 
     view.print_message("What would you like to update?")
     employee = employees_table[emp_number]
@@ -43,12 +45,12 @@ def update_employee():
 
     record = int(view.get_input("Please type a number: "))
 
-
-
     current_label = employee[hr.HEADERS.index("Name")]
     view.print_message(f"You're updating {current_label}'s {hr.HEADERS[record]}")
+
     new_value = view.get_input("Please provide new value: ")
     hr.update(employee[hr.HEADERS.index("Id")], hr.HEADERS[record], new_value)
+
     view.print_message("Record updated. Please check your new table: ")
     list_employees()
 
@@ -59,18 +61,7 @@ def delete_employee():
     
     view.print_message("Which employee you'd like to delete?")
 
-# REFACTORING BLOCK
-
-    for count, employee in enumerate(employees_table):
-        employee_data = {}
-        for value in range(len(employee)):
-            employee_data.update({hr.HEADERS[value]: employee[value]})
-
-        view.print_general_results(employee_data, count)
-
-    emp_number = int(view.get_input("Please provide employee number:"))
-
-# /REFACTORING BLOCK
+    emp_number = employee_pointer(employees_table)
 
     chosen_emp_id = employees_table[emp_number][hr.HEADERS.index("Id")]
 
@@ -120,7 +111,7 @@ def get_average_age():
 def is_leap_year(year):
     return (year %4 == 0 and not year %100 == 0) or year %400 == 0
 
-def date_in_two_weeks(current_date):
+def date_in_xx_days(current_date, days):
     
     MONTHS_W_31_DAYS = ('01', '03', '05', '07', '08', '10', '12')
 
@@ -133,7 +124,7 @@ def date_in_two_weeks(current_date):
     else:
         days_in_month = 31 if current_month in MONTHS_W_31_DAYS else 30
 
-    day_in_14 = int(current_day) + 14
+    day_in_14 = int(current_day) + days
     month_in_14 = int(current_month)
     year_in_14 = int(current_year)
 
@@ -155,26 +146,24 @@ def date_in_two_weeks(current_date):
 def next_birthdays():
 
     current_date = view.get_input("Please enter current date in yyyy-mm-dd format: ")
-    date_in_14 = date_in_two_weeks(current_date)
 
     employees_table = hr.read()
     DoB_position = hr.HEADERS.index("Date of birth")
     Name_position = hr.HEADERS.index("Name")
 
-    current_month_and_day = current_date[5:10]
-    month_and_day_in_14 = date_in_14[5:10]
-
     employees_with_bday_in_14 = dict()
+
+    #let's generate strings for next 14 days
+    days_base = []
+    for i in range(1,15):
+        days_base.append(date_in_xx_days(current_date, i)[5:10])
 
     for employee in employees_table:
         emp_month_and_day = employee[DoB_position][5:10]
 
-    #breaks on DEC/JAN
-
-        if current_month_and_day <= emp_month_and_day <= month_and_day_in_14:
+        if emp_month_and_day in days_base:
             employees_with_bday_in_14[employee[Name_position]] = emp_month_and_day
     
-    view.print_general_results([date_in_14], "The date in two weeks will be")
     view.print_general_results(employees_with_bday_in_14, "Following employees will have their birthday in two weeks")
 
 
