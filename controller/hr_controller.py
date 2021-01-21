@@ -55,7 +55,6 @@ def update_employee():
     list_employees()
 
 
-
 def delete_employee():
     employees_table = hr.read()
     
@@ -87,6 +86,65 @@ def get_oldest_and_youngest():
 
     view.print_general_results((youngest_date, oldest_date), "The youngest and oldest employees are")
 
+
+def is_leap_year(year):
+    return (year %4 == 0 and not year %100 == 0) or year %400 == 0
+
+#Calculate the Days between Two Date
+
+days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+def day_counter(year1, month1, day1):
+    if month1 == 2:
+        if is_leap_year(year1):
+            if day1 < days_in_month[month1-1] + 1:
+                day1 += 1
+                return year1, month1, day1
+            else:
+                if month1 == 12:
+                    year += 1
+                    return year1, 1, 1
+                else:
+                    month1 += 1
+                    return year1, month1, 1
+        else: 
+            if day1 < days_in_month[month1-1]:
+                return year1, month1, day1 + 1
+            else:
+                if month1 ==12:
+                    return year1 + 1, 1, 1
+                else:
+                    return year1, month1 + 1, 1
+    else:
+        if day1 < days_in_month[month1-1]:
+             return year1, month1, day1+1
+        else:
+            if month1 == 12:
+                year1 += 1
+                return year1,1,1
+            else:
+                    return year1, month1 +1 , 1
+
+
+def days_between_dates(year1, month1, day1, year2, month2, day2, count_end_day):
+
+# assigning greater to right
+    if year1 > year2:
+        month1, month2 = month2, month1
+        year1, year2 = year2, year1
+        day1, day2 = day2, day1
+
+
+    days = 0
+
+    while(not(month1==month2 and year1==year2 and day1==day2)):
+        year1, month1, day1 = day_counter(year1,month1,day1)
+        days+=1
+    if count_end_day:
+        days+=1
+    return days
+
+
 def get_average_age():
 
     employees_table = hr.read()
@@ -95,21 +153,27 @@ def get_average_age():
 
     currentdate = view.get_input("Please enter current date in yyyy-mm-dd format: ")
 
-    current_year = currentdate[:4]
+    current_year = int(currentdate[:4])
+    current_month = int(currentdate[5:7])
+    current_day = int(currentdate[8:10])
 
-    bth_years = []
+    ages_in_days = []
 
     for employee in employees_table:
-        emp_age  = int(current_year) - int(employee[DoB_position][:4])
-        bth_years.append(emp_age)
 
-    avg_age = sum(bth_years) / len(bth_years) #should count months (at least)
+        emp_year = int(employee[DoB_position][:4])
+        emp_month = int(employee[DoB_position][5:7])
+        emp_day = int(employee[DoB_position][8:10])
 
-    view.print_general_results({"The average age of employees is": avg_age}, "")
+        emp_age  = days_between_dates(emp_year, emp_month, emp_day, current_year, current_month, current_day, True)
 
+        ages_in_days.append(emp_age)
 
-def is_leap_year(year):
-    return (year %4 == 0 and not year %100 == 0) or year %400 == 0
+    avg_age_in_days = sum(ages_in_days) / len(ages_in_days)
+    avg_age_in_years = avg_age_in_days / 365.242199 #that's a year in decimal
+
+    view.print_general_results({"The average age of employees is": avg_age_in_years}, "")
+
 
 def date_in_xx_days(current_date, days):
     
@@ -192,7 +256,6 @@ def count_employees_with_clearance():
 def count_employees_per_department():
     '''HR module/(9) Return the number of employees per department in a dictionary (like {'dep1': 5, 'dep2': 11}).'''
 
-    view.print_error_message("Not implemented yet.")
 
 
 def run_operation(option):
