@@ -256,6 +256,21 @@ def count_employees_with_clearance():
 def count_employees_per_department():
     '''HR module/(9) Return the number of employees per department in a dictionary (like {'dep1': 5, 'dep2': 11}).'''
 
+    employees_table = hr.read()
+
+    dep_index = hr.HEADERS.index("Department")
+
+    dep_counter = dict()
+
+    for employee in employees_table:
+        department = employee[dep_index]
+
+        if department in dep_counter.keys():
+            dep_counter[department] += 1
+        else:
+            dep_counter[department] = 1
+
+    view.print_general_results(dep_counter, "You have that many employees in departments")
 
 
 def run_operation(option):
