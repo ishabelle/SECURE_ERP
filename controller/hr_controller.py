@@ -96,7 +96,6 @@ def get_oldest_and_youngest():
 
     view.print_general_results((youngest_date, oldest_date), "The youngest and oldest employees are")
 
-
 def get_average_age():
 
     employees_table = hr.read()
@@ -118,8 +117,65 @@ def get_average_age():
     view.print_general_results({"The average age of employees is": avg_age}, "")
 
 
+def is_leap_year(year):
+    return (year %4 == 0 and not year %100 == 0) or year %400 == 0
+
+def date_in_two_weeks(current_date):
+    
+    MONTHS_W_31_DAYS = ('01', '03', '05', '07', '08', '10', '12')
+
+    current_year = current_date[0:4]
+    current_month = current_date[5:7]
+    current_day = current_date[8:10]
+
+    if current_month == '02':
+        days_in_month = 29 if is_leap_year(current_year) else 28
+    else:
+        days_in_month = 31 if current_month in MONTHS_W_31_DAYS else 30
+
+    day_in_14 = int(current_day) + 14
+    month_in_14 = int(current_month)
+    year_in_14 = int(current_year)
+
+    if day_in_14 > days_in_month:
+        month_in_14 += 1
+        day_in_14 = day_in_14 % days_in_month
+
+    if month_in_14 > 12:
+        year_in_14 += 1
+        month_in_14 = month_in_14 % 12
+
+    # this makes one digit month a two digit string
+    month_in_14 = format(month_in_14, '02d')
+    day_in_14 = format(day_in_14, '02d')
+
+    return f'{year_in_14}-{month_in_14}-{day_in_14}'
+
+
 def next_birthdays():
-    view.print_error_message("Not implemented yet.")
+
+    current_date = view.get_input("Please enter current date in yyyy-mm-dd format: ")
+    date_in_14 = date_in_two_weeks(current_date)
+
+    employees_table = hr.read()
+    DoB_position = hr.HEADERS.index("Date of birth")
+    Name_position = hr.HEADERS.index("Name")
+
+    current_month_and_day = current_date[5:10]
+    month_and_day_in_14 = date_in_14[5:10]
+
+    employees_with_bday_in_14 = dict()
+
+    for employee in employees_table:
+        emp_month_and_day = employee[DoB_position][5:10]
+
+    #breaks on DEC/JAN
+
+        if current_month_and_day <= emp_month_and_day <= month_and_day_in_14:
+            employees_with_bday_in_14[employee[Name_position]] = emp_month_and_day
+    
+    view.print_general_results([date_in_14], "The date in two weeks will be")
+    view.print_general_results(employees_with_bday_in_14, "Following employees will have their birthday in two weeks")
 
 
 def count_employees_with_clearance():
