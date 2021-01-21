@@ -123,10 +123,30 @@ def next_birthdays():
 
 
 def count_employees_with_clearance():
-    view.print_error_message("Not implemented yet.")
+    '''HR module/(8) Return the number of employees with at least the given clearance level.'''
+
+    clearance_index = hr.HEADERS.index("Clearance")
+
+    employees_table = hr.read()
+    clearence_table = []
+
+    for employee in employees_table:
+        clearence_table.append(employee[clearance_index])
+
+    desired_cleareance = view.get_input("Please type Clearence treshold: ")
+
+    counter = int()
+
+    for clearance in clearence_table:
+        if desired_cleareance <= clearance:
+            counter += 1
+
+    view.print_general_results((counter), "You have this many employees with desired clearance")
 
 
 def count_employees_per_department():
+    '''HR module/(9) Return the number of employees per department in a dictionary (like {'dep1': 5, 'dep2': 11}).'''
+
     view.print_error_message("Not implemented yet.")
 
 
