@@ -3,73 +3,83 @@ from view import terminal as view
 
 
 def list_customers():
-    '''By using this function, we can print list of customers in table, from loaded file in table'''
+    '''Function prints list of customers in table, from loaded file'''
     view.print_message("\n List of Customers:\n")
-    customers_list = crm.read()
+    customers_list = crm.read_customers_data()
     view.print_table(customers_list, crm.HEADERS)
 
 
 
 def add_customer():
-    '''By using this function, we can add customer to chosen file'''
+    '''Function adds customer to chosen file, function can handle: empty input and wrong data type in case of user_subscribe_status input'''
     view.print_message("\n Add customer:\n")
     user_name = view.get_input("Type name: ")
+    crm.check_content_for_empty_value(user_name)
     user_email = view.get_input("Type email ")
+    crm.check_content_for_empty_value(user_email)
     user_subscribe_status = view.get_input("Is customer subscriber? 1: YES, 2: NO ")
+    crm.is_input_not_empty_and_is_integer(user_subscribe_status)
     crm.create_customer(user_name, user_email, user_subscribe_status)
     
-    view.print_table(crm.read(), crm.HEADERS)
+    view.print_table(crm.read_customers_data(), crm.HEADERS)
 
 
 
 def update_customer():
-    '''By using this function, we can update customer'''
+    '''Function updates customers name, email and subscription status, function can handle: wrong customer id, empty input amd wrong type in case of user_subscribe_status input'''
     view.print_message("\n Update customer:\n")
     user_id = view.get_input("Type customer id ")
-    crm.check_id(user_id)
+    crm.check_customer_id(user_id)
     updated_name = view.get_input("Type name for update or press enter to skip this field ")
+    crm.check_content_for_empty_value(updated_name)
     updated_email = view.get_input("Type email for update or press enter to skip this field  ")
-    updated_subscribe_status = view.get_input("Type user subscribe status or press enter to skip this field (1: Is a subsriber, 2: is't a subscriber) ")
+    crm.check_content_for_empty_value(updated_email)
+    updated_subscription_status = view.get_input("Type user subscription status or press enter to skip this field (1: Is a subsriber, 2: is't a subscriber) ")
+    crm.is_input_not_empty_and_is_integer(updated_subscription_status)
     
-    crm.update(user_id, updated_name, updated_email, updated_subscribe_status)
-    view.print_table(crm.read(), crm.HEADERS)
+    crm.update_customer(user_id, updated_name, updated_email, updated_subscription_status)
+    view.print_table(crm.read_customers_data(), crm.HEADERS)
     
     
     
 def delete_customer():
-    '''By using this function, we can delete customer'''
+    '''Function removes customer, function can handle: wrond customer id'''
     view.print_message("\n delete_customer:\n")
     user_id = view.get_input("User id: ")
-    crm.delete(user_id)
-    view.print_table(crm.read(), crm.HEADERS)
+    crm.check_customer_id(user_id)
+    crm.delete_customer(user_id)
+    view.print_table(crm.read_customers_data(), crm.HEADERS)
 
 
 
-def get_subscribed_emails():
-    '''By using this function, we can check all subscribers'''
+def get_subscribers_emails():
+    '''Function collects subscribers emails and displays them numbered'''
     view.print_message("\n List of subscribers emails:\n")
-    
-    #we changed get_subscribers. manage new output
-    
-    subscribers_email_list = crm.get_subscribers()
-    view.print_message((''.join(subscribers_email_list)))
-    
+    emails_list = crm.check_emails_of_subscribing_customers()
+    crm.print_list_in_table(emails_list)
     
     
 def run_operation(option):
     if option == 1:
         list_customers()
     elif option == 2:
-        add_customer()
+        try:                               
+            add_customer()
+        except ValueError as empty_input:
+            view.print_error_message(empty_input)
     elif option == 3:
-        try:
+        try:                               
             update_customer()
-        except ValueError as e:
-            view.print_error_message(e)
+        except ValueError as wrong_id:            
+            view.print_error_message(wrong_id) 
+        update_customer()
     elif option == 4:
-        delete_customer()
+        try:                                
+            delete_customer()
+        except ValueError as wrong_id:
+            view.print_error_message(wrong_id)
     elif option == 5:
-        get_subscribed_emails()
+        get_subscribers_emails()
     elif option == 0:
         return
     else:
