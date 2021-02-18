@@ -1,37 +1,121 @@
-from model.sales import sales
+from model.sales import sales 
 from view import terminal as view
+from model import util
+
+
+INDEX_COL_ID = 0
+INDEX_COL_CUSTOMER = 1
+INDEX_COL_PRODUCT = 2 
+INDEX_COL_PRICE = 3
+INDEX_COL_DATE = 4
 
 
 def list_transactions():
-    view.print_error_message("Not implemented yet.")
+    """ Opening transactions list """
 
+    view.print_message("\nLIST TRANSACTION\n")
+    transactions_list = sales.read()
+    view.print_table(transactions_list, sales.HEADERS)
+    
 
 def add_transaction():
-    view.print_error_message("Not implemented yet.")
+    """ Adding new element to list transactions """
 
+    view.print_message("\nADDING NEW TRANSACTIONS\n")
+    product = view.get_input("Please enter product name: ")
+    price = view.get_input("Please enter price of product: ")
+    date = view.get_input("Please provide date of transaction (in format 2021-01-11): ")
+    sales.create(product, price, date)
+    view.print_table(sales.read(), sales.HEADERS)
+    
+    
+def update_transaction(): 
+    """ Updating transaction list"""
+    
+    transactions = sales.read()
+    id = view.get_input("Please provide and ID of transaction you wish to update: ")
+    product, price, date = view.get_inputs(["Update product name: ", "Update product price: ", "Update date in format (YYYY-MM-DD): "])
+    sales.update(id, product, price, date)
+    view.print_table(sales.read(), sales.HEADERS)
+   
+    
+def delete_transaction(): 
+    """ Removing transaction from the list of transaction """
 
-def update_transaction():
-    view.print_error_message("Not implemented yet.")
-
-
-def delete_transaction():
-    view.print_error_message("Not implemented yet.")
-
+    view.print_message("\nREMOVING TRANSACTION\n")
+    id = view.get_input("Please provide the ID, which you want to update: ")
+    sales.delete(id)
+    view.print_table(sales.read(), sales.HEADERS)
+              
 
 def get_biggest_revenue_transaction():
-    view.print_error_message("Not implemented yet.")
+    """ Determining which transaction is the largest and makes the biggest revenue """
+
+    income = []
+    transaction_list = sales.read()
+
+    for element in transaction_list:
+        income.append(float(element[3]))
+
+    max_income_index = income.index(max(income))
+    id_max_income_transaction = transaction_list[max_income_index][INDEX_COL_ID]
+    view.print_message(f"\nTransaction that makes the biggest revenue is: {id_max_income_transaction}\n")
+        
+
+def get_biggest_revenue_product(): 
+    """ Determining which product makes the biggest revenue """
+
+    income = []
+    transaction_list = sales.read()
+
+    for element in transaction_list:
+        income.append(float(element[3]))
+
+    max_income_index = income.index(max(income))
+    id_max_income_transaction = transaction_list[max_income_index][INDEX_COL_PRODUCT]
+    view.print_message(f"\nThe product that makes the biggest revenue is: {id_max_income_transaction}\n")
+    
+
+def count_transactions_between(): 
+    """ Counting number of transactions between two given dates """
+    
+    dates = []
+    first_date = view.get_input("\nPlease provide first date (in format 2021-01-11): ")
+    second_date = view.get_input("\nPlease provide second date (in format 2021-01-11): ")
+    transactions = sales.read()
+    
+    for row in transactions:
+        dates.append(row[-1])
+    count = 0
+    for date in dates:
+        if date > first_date and date < second_date:
+            count += 1
+    view.print_message(f"\nThe number of transaction beetween {first_date} and {second_date} is {count}.\n")
 
 
-def get_biggest_revenue_product():
-    view.print_error_message("Not implemented yet.")
+def sum_transactions_between(): 
+    """ Summing the price of transactions between two given dates """
 
+    dates = []
+    transaction_price = []
+    transactions_sum = []
+    indexes = []
+    transactions = sales.read()
+    first_date = view.get_input("\nPlease provide first date (in format 2021-01-11): ")
+    second_date = view.get_input("\nPlease provide second date (in format 2021-01-11): ")
 
-def count_transactions_between():
-    view.print_error_message("Not implemented yet.")
-
-
-def sum_transactions_between():
-    view.print_error_message("Not implemented yet.")
+    for row in transactions:
+        dates.append(row[-1])
+        transaction_price.append(row[-2])
+    for date in dates:
+        if date > first_date and date < second_date:
+            indexes.append(dates.index(date))
+    for index in indexes:
+        transactions_sum.append(transaction_price[index])
+    
+    transactions_sum = [float(trans) for trans in transactions_sum]
+    result = sum(transactions_sum)
+    view.print_message(f"\nThe sum beetween {first_date} and {second_date} is {result}.\n")
 
 
 def run_operation(option):
@@ -75,7 +159,7 @@ def menu():
     while operation != '0':
         display_menu()
         try:
-            operation = view.get_input("Select an operation")
+            operation = view.get_input("Select an operation: ")
             run_operation(int(operation))
         except KeyError as err:
             view.print_error_message(err)

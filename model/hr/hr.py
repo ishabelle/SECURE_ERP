@@ -21,10 +21,10 @@ def read(with_headers=False):
         file_content = HEADERS + file_content
     return file_content
 
-def create(name, date_of_birth, department, clearance):
+def create(data):
     table = read()
     id = util.generate_id()
-    data_to_add = [id, name, date_of_birth, department, clearance]
+    data_to_add = [id, data["Name"], data["Date of birth"], data["Department"], data["Clearance"]]
     table.append(data_to_add)
     data_manager.write_table_to_file(DATAFILE, table)
 
